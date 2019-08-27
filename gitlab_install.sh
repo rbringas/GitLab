@@ -2,8 +2,6 @@
 
 # Quick and Dirty script to install GitLab on CentOS
 # This is meant for spinning up a quick lab environment
-# Production instances should have the appropriate firewall and selinux settings
-
 
 # Author: Raul Bringas (@raulbringasjr)
 # Tested on: CentOS 7
@@ -46,9 +44,10 @@ sudo systemctl start postfix
 echo "Installing gitlab repository..."
 wget -O /tmp/script.rpm.sh https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh
 (($? != 0)) && { printf '%s\n' "Failed to download gitlab repository script, check internet connection!"; exit 1; }
-sh /tmp/script.rpm.sh
+sudo sh /tmp/script.rpm.sh
 
 # Set GitLab URL and install GitLab
-read -p "Enter a url for your GitLab instance (ex. https://git.example.com): " gitLabURL
+echo "Use HTTP for now until Let's Encrypt bug is fixed install cert manually..."
+read -p "Enter a url for your GitLab instance (ex. http://git.example.com): " gitLabURL
 echo "Installing GitLab using the following URL: $gitLabURL"
 sudo EXTERNAL_URL="$gitLabURL" yum install -y gitlab-ee
